@@ -71,9 +71,22 @@ class MyPortfolio:
             index=self.price.index, columns=self.price.columns
         )
 
+        window = 10
+
         """
         TODO: Complete Task 4 Below
         """
+
+        for i in range(window, len(self.price)):
+            MA = self.price.iloc[i - window: i, :][assets].mean()
+            cur_price = self.price.iloc[i, :][assets]
+            r = [1 if y > x else 0 for x, y in zip(MA, cur_price)]
+            summ = sum(r)
+            if summ == 0:
+                self.portfolio_weights.iloc[i, -11:] = 0
+            else:
+                r = [x / summ for x in r]
+                self.portfolio_weights.iloc[i, -11:] = r
 
         """
         TODO: Complete Task 4 Above
