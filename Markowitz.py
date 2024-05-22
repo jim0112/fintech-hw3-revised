@@ -201,12 +201,12 @@ class MeanVariancePortfolio:
 
                 # Sample Code: Initialize Decision w and the Objective
                 # NOTE: You can modify the following code
-                w = model.addVars(n, vtype=gp.GRB.CONTINUOUS, name="w")
-                obj = sum(mu[i] * w[i] for i in range(n)) - gamma / 2 * sum(Sigma[i][j] * w[i] * w[j] for i in range(n) for j in range(n))
+                w = model.addMVar(n, vtype=gp.GRB.CONTINUOUS, name="w")
+                obj = w @ mu - 0.5 * gamma * (w @ Sigma @ w)
                 model.setObjective(obj, gp.GRB.MAXIMIZE)
-                model.addConstr(sum(w[i] for i in range(n)) == 1, "budget")
-                for i in range(n):
-                    model.addConstr(w[i] >= 0, f"non_negative_{i}")
+                model.addConstr(w.sum() == 1, "budget")
+                # for i in range(n):
+                #     model.addConstr(w[i] >= 0, f"non_negative_{i}")
 
                 """
                 TODO: Complete Task 3 Below

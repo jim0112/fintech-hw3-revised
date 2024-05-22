@@ -71,7 +71,7 @@ class MyPortfolio:
             index=self.price.index, columns=self.price.columns
         )
 
-        window = 10
+        window = 13
 
         """
         TODO: Complete Task 4 Below
@@ -79,7 +79,7 @@ class MyPortfolio:
 
         for i in range(window, len(self.price)):
             MA = self.price.iloc[i - window: i, :][assets].mean()
-            cur_price = self.price.iloc[i, :][assets]
+            cur_price = self.price.iloc[i - 1, :][assets]
             r = [1 if y > x else 0 for x, y in zip(MA, cur_price)]
             summ = sum(r)
             if summ == 0:
